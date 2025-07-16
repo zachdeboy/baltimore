@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Brand Conversion Analysis - 100 Hopkins Place</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f1419;
+            color: #e1e8ed;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+            border-radius: 10px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .disclaimer {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1e2938;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th {
+            background: #2d3748;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #e1e8ed;
+            border-bottom: 2px solid #3949ab;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #2d3748;
+        }
+        
+        tr:hover {
+            background: #2d3748;
+            cursor: pointer;
+        }
+        
+        .rank {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .rank-1 { color: #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+        
+        .brand-name {
+            font-weight: bold;
+            color: #81c784;
+        }
+        
+        .roi-score {
+            background: #3949ab;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .calculator {
+            background: #1e2938;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .calculator h2 {
+            color: #4fc3f7;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            display: inline-block;
+            margin: 10px;
+        }
+        
+        .input-group label {
+            display: block;
+            color: #90a4ae;
+            margin-bottom: 5px;
+        }
+        
+        .input-group input, .input-group select {
+            padding: 10px;
+            border: 1px solid #3949ab;
+            background: #2d3748;
+            color: #e1e8ed;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 200px;
+        }
+        
+        .calculate-btn {
+            background: #3949ab;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .calculate-btn:hover {
+            background: #5c6bc0;
+        }
+        
+        .results {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #2d3748;
+            border-radius: 8px;
+        }
+        
+        .result-item {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px;
+            background: #1e2938;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 150px;
+        }
+        
+        .result-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #81c784;
+        }
+        
+        .result-label {
+            color: #90a4ae;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .chart-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #1e2938;
+            border-radius: 10px;
+        }
+        
+        .chart-section h3 {
+            color: #4fc3f7;
+            margin-bottom: 15px;
+        }
+        
+        .simple-chart {
+            margin: 20px 0;
+        }
+        
+        .bar {
+            display: inline-block;
+            width: 40px;
+            margin: 0 5px;
+            vertical-align: bottom;
+        }
+        
+        .bar-current {
+            background: #f44336;
+        }
+        
+        .bar-projected {
+            background: #4caf50;
+        }
+        
+        .bar-label {
+            font-size: 0.8em;
+            text-align: center;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Hotel Brand Conversion Feasibility Matrix</h1>
+            <p style="font-size: 1.2em; color: #b3e5fc;">100 Hopkins Place, Baltimore - Investment Analysis Dashboard</p>
+        </div>
+        
+        <div class="disclaimer">
+            ⚠️ IMPORTANT: All projections are hypothetical estimates for illustrative purposes only. Actual results will vary.
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Brand Option</th>
+                    <th>Parent</th>
+                    <th>Cost/Key</th>
+                    <th>Total Investment</th>
+                    <th>Approval Odds</th>
+                    <th>Key Money</th>
+                    <th>Year 3 RevPAR</th>
+                    <th>ROI Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="rank rank-1">1</td>
+                    <td class="brand-name">TRYP by Wyndham</td>
+                    <td>Wyndham</td>
+                    <td>$25K-$35K</td>
+                    <td>$6.2M-$8.7M</td>
+                    <td>95%</td>
+                    <td>$1.0M-$1.5M</td>
+                    <td>$110-$125</td>
+                    <td><span class="roi-score">9.5/10</span></td>
+                </tr>
+                <tr>
+                    <td class="rank rank-2">2</td>
+                    <td class="brand-name">Dolce by Wyndham</td>
+                    <td>Wyndham</td>
+                    <td>$40K-$55K</td>
+                    <td>$9.9M-$13.6M</td>
+                    <td>85%</td>
+                    <td>$1.5M-$2.0M</td>
+                    <td>$130-$150</td>
+                    <td><span class="roi-score">9.0/10</span></td>
+                </tr>
+                <tr>
+                    <td class="rank rank-3">3</td>
+                    <td class="brand-name">Tapestry Collection</td>
+                    <td>Hilton</td>
+                    <td>$30K-$40K</td>
+                    <td>$7.4M-$9.9M</td>
+                    <td>65%</td>
+                    <td>$500K-$750K</td>
+                    <td>$125-$140</td>
+                    <td><span class="roi-score">8.5/10</span></td>
+                </tr>
+                <tr>
+                    <td class="rank">4</td>
+                    <td class="brand-name">Trademark Collection</td>
+                    <td>Wyndham</td>
+                    <td>$20K-$30K</td>
+                    <td>$5.0M-$7.4M</td>
+                    <td>95%</td>
+                    <td>$500K-$750K</td>
+                    <td>$100-$115</td>
+                    <td><span class="roi-score">8.2/10</span></td>
+                </tr>
+                <tr>
+                    <td class="rank">5</td>
+                    <td class="brand-name">Wyndham Hotels</td>
+                    <td>Wyndham</td>
+                    <td>$35K-$45K</td>
+                    <td>$8.7M-$11.2M</td>
+                    <td>90%</td>
+                    <td>$750K-$1.0M</td>
+                    <td>$115-$135</td>
+                    <td><span class="roi-score">7.8/10</span></td>
+                </tr>
+                <tr>
+                    <td class="rank">6</td>
+                    <td class="brand-name">Vignette Collection</td>
+                    <td>IHG</td>
+                    <td>$45K-$65K</td>
+                    <td>$11.2M-$16.1M</td>
+                    <td>55%</td>
+                    <td>$750K-$1.2M</td>
+                    <td>$145-$165</td>
+                    <td><span class="roi-score">7.5/10</span></td>
+                </tr>
+                <tr>
+                    <td class="rank">7</td>
+                    <td class="brand-name">Wyndham Grand</td>
+                    <td>Wyndham</td>
+                    <td>$45K-$60K</td>
+                    <td>$11.2M-$14.9M</td>
+                    <td>75%</td>
+                    <td>$1.0M-$1.5M</td>
+                    <td>$140-$160</td>
+                    <td><span class="roi-score">7.2/10</span></td>
+                </tr>
+                <tr>
+                    <td class="rank">8</td>
+                    <td class="brand-name">Autograph Collection</td>
+                    <td>Marriott</td>
+                    <td>$35K-$50K</td>
+                    <td>$8.7M-$12.4M</td>
+                    <td>45%</td>
+                    <td>$300K-$500K</td>
+                    <td>$135-$155</td>
+                    <td><span class="roi-score">6.8/10</span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="calculator">
+            <h2>ROI Calculator (Hypothetical)</h2>
+            <div>
+                <div class="input-group">
+                    <label>Select Brand</label>
+                    <select id="brandSelect">
+                        <option value="tryp">TRYP by Wyndham</option>
+                        <option value="dolce">Dolce by Wyndham</option>
+                        <option value="tapestry">Tapestry Collection</option>
+                        <option value="trademark">Trademark Collection</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Investment ($)</label>
+                    <input type="number" id="investment" value="8000000">
+                </div>
+                <div class="input-group">
+                    <label>Key Money ($)</label>
+                    <input type="number" id="keyMoney" value="1250000">
+                </div>
+                <div class="input-group">
+                    <label>Target RevPAR ($)</label>
+                    <input type="number" id="revpar" value="118">
+                </div>
+            </div>
+            <button class="calculate-btn" onclick="doCalculation()">Calculate Returns</button>
+            
+            <div id="results" class="results">
+                <div class="result-item">
+                    <div class="result-value" id="netInvestment">$6.75M</div>
+                    <div class="result-label">Net Investment</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="annualRevenue">$10.7M</div>
+                    <div class="result-label">Annual Revenue</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="payback">3.8 years</div>
+                    <div class="result-label">Payback Period</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="irr">22.5%</div>
+                    <div class="result-label">Projected IRR</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chart-section">
+            <h3>RevPAR Comparison (Current vs Projected)</h3>
+            <div class="simple-chart">
+                <div style="margin-bottom: 20px;">
+                    <span style="color: #f44336;">■</span> Current Days Inn ($62)
+                    <span style="color: #4caf50; margin-left: 20px;">■</span> Projected Performance
+                </div>
+                <div>
+                    <strong>TRYP:</strong> 
+                    <div class="bar bar-current" style="height: 62px;"></div>
+                    <div class="bar bar-projected" style="height: 118px;"></div>
+                    <span>$118</span>
+                </div>
+                <div style="margin-top: 20px;">
+                    <strong>Dolce:</strong> 
+                    <div class="bar bar-current" style="height: 62px;"></div>
+                    <div class="bar bar-projected" style="height: 140px;"></div>
+                    <span>$140</span>
+                </div>
+                <div style="margin-top: 20px;">
+                    <strong>Tapestry:</strong> 
+                    <div class="bar bar-current" style="height: 62px;"></div>
+                    <div class="bar bar-projected" style="height: 133px;"></div>
+                    <span>$133</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chart-section">
+            <h3>Key Market Intelligence</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 10px 0;">✓ Your 0.1-mile distance to Convention Center is unmatched</li>
+                <li style="margin: 10px 0;">✓ Moving from $95 to $155+ ADR captures missing market segment</li>
+                <li style="margin: 10px 0;">✓ Baltimore removed 2,500 rooms (20% supply reduction)</li>
+                <li style="margin: 10px 0;">✓ 55 annual conventions generate $115.7M economic impact</li>
+                <li style="margin: 10px 0;">✓ Convention ADR premiums reach 2.5x-2.9x base rates</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        function doCalculation() {
+            var investment = parseFloat(document.getElementById('investment').value) || 0;
+            var keyMoney = parseFloat(document.getElementById('keyMoney').value) || 0;
+            var revpar = parseFloat(document.getElementById('revpar').value) || 0;
+            
+            var netInvestment = investment - keyMoney;
+            var rooms = 248;
+            var occupancy = 0.72;
+            var annualRevenue = revpar * 365 * rooms * occupancy / 1000000;
+            var noi = annualRevenue * 0.35;
+            var payback = netInvestment / (noi * 1000000);
+            var irrCalc = Math.pow((investment + (noi * 5 * 1000000)) / investment, 0.2) - 1;
+            var irr = (irrCalc * 100).toFixed(1);
+            
+            document.getElementById('netInvestment').textContent = '$' + (netInvestment / 1000000).toFixed(2) + 'M';
+            document.getElementById('annualRevenue').textContent = '$' + annualRevenue.toFixed(1) + 'M';
+            document.getElementById('payback').textContent = payback.toFixed(1) + ' years';
+            document.getElementById('irr').textContent = irr + '%';
+            
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
