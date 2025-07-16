@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Brand Conversion Matrix - 100 Hopkins Place</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f1419;
+            color: #e1e8ed;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .disclaimer {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(255,107,107,0.3);
+        }
+        
+        .disclaimer-icon {
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .metric-card {
+            background: #1e2938;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #2d3748;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4fc3f7;
+            margin: 10px 0;
+        }
+        
+        .metric-label {
+            color: #90a4ae;
+            font-size: 0.9em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1e2938;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        th {
+            background: #2d3748;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #e1e8ed;
+            border-bottom: 2px solid #3949ab;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #2d3748;
+        }
+        
+        tr {
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+        
+        tr:hover {
+            background: #2d3748;
+        }
+        
+        .rank {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .rank-1 { color: #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+        .rank-4, .rank-5, .rank-6, .rank-7, .rank-8 { color: #4fc3f7; }
+        
+        .brand-name {
+            font-weight: bold;
+            color: #81c784;
+        }
+        
+        .approval-high { color: #4caf50; }
+        .approval-medium { color: #ff9800; }
+        .approval-low { color: #f44336; }
+        
+        .roi-score {
+            background: #3949ab;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .detail-panel {
+            display: none;
+            margin-top: 20px;
+            padding: 25px;
+            background: #2d3748;
+            border-radius: 10px;
+            border: 1px solid #3949ab;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .detail-section {
+            background: #1e2938;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #3949ab;
+        }
+        
+        .detail-section h3 {
+            color: #4fc3f7;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .detail-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .detail-section li {
+            padding: 5px 0;
+            color: #b0bec5;
+        }
+        
+        .detail-section li:before {
+            content: "▸ ";
+            color: #4fc3f7;
+            font-weight: bold;
+        }
+        
+        .calculator {
+            background: #1e2938;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 1px solid #3949ab;
+        }
+        
+        .calculator h2 {
+            color: #4fc3f7;
+            margin-bottom: 20px;
+        }
+        
+        .calculator-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group label {
+            color: #90a4ae;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .input-group input {
+            padding: 10px;
+            border: 1px solid #3949ab;
+            background: #2d3748;
+            color: #e1e8ed;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        .calculate-btn {
+            background: #3949ab;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .calculate-btn:hover {
+            background: #5c6bc0;
+        }
+        
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .result-item {
+            background: #2d3748;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #3949ab;
+        }
+        
+        .result-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #81c784;
+        }
+        
+        .result-label {
+            color: #90a4ae;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #607d8b;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Hotel Brand Conversion Feasibility Matrix</h1>
+            <p style="font-size: 1.2em; color: #b3e5fc;">100 Hopkins Place, Baltimore - Interactive Analysis Dashboard</p>
+        </div>
+        
+        <div class="disclaimer">
+            <span class="disclaimer-icon">⚠️</span>
+            <strong>IMPORTANT DISCLAIMER:</strong> All financial projections, conversion costs, and performance metrics shown below are purely hypothetical estimates for illustrative purposes only. Actual costs and results will vary significantly based on market conditions, property specifics, negotiation outcomes, and timing. Always conduct thorough due diligence with brand representatives and industry professionals.
+        </div>
+        
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Current Property</div>
+                <div class="metric-value">248</div>
+                <div class="metric-label">Total Rooms</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Acquisition Price</div>
+                <div class="metric-value">$12M</div>
+                <div class="metric-label">Your Investment</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Current RevPAR</div>
+                <div class="metric-value">$62</div>
+                <div class="metric-label">Days Inn Performance</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Convention Distance</div>
+                <div class="metric-value">0.1 mi</div>
+                <div class="metric-label">Prime Location</div>
+            </div>
+        </div>
+        
+        <table id="brandTable">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Brand Option</th>
+                    <th>Parent</th>
+                    <th>Chain Scale</th>
+                    <th>Cost/Key</th>
+                    <th>Total Investment*</th>
+                    <th>Approval</th>
+                    <th>Key Money**</th>
+                    <th>Year 3 RevPAR***</th>
+                    <th>ROI Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr onclick="toggleDetail('tryp')">
+                    <td class="rank rank-1">1️⃣</td>
+                    <td class="brand-name">TRYP by Wyndham</td>
+                    <td>Wyndham</td>
+                    <td>Upscale Lifestyle</td>
+                    <td>$25K-$35K</td>
+                    <td>$6.2M-$8.7M</td>
+                    <td class="approval-high">95%</td>
+                    <td>$1.0M-$1.5M</td>
+                    <td>$110-$125</td>
+                    <td><span class="roi-score">9.5/10</span></td>
+                </tr>
+                <tr onclick="toggleDetail('dolce')">
+                    <td class="rank rank-2">2️⃣</td>
+                    <td class="brand-name">Dolce by Wyndham</td>
+                    <td>Wyndham</td>
+                    <td>Meeting-Focused</td>
+                    <td>$40K-$55K</td>
+                    <td>$9.9M-$13.6M</td>
+                    <td class="approval-high">85%</td>
+                    <td>$1.5M-$2.0M</td>
+                    <td>$130-$150</td>
+                    <td><span class="roi-score">9.0/10</span></td>
+                </tr>
+                <tr onclick="toggleDetail('tapestry')">
+                    <td class="rank rank-3">3️⃣</td>
+                    <td class="brand-name">Tapestry Collection</td>
+                    <td>Hilton</td>
+                    <td>Upscale Soft</td>
+                    <td>$30K-$40K</td>
+                    <td>$7.4M-$9.9M</td>
+                    <td class="approval-medium">65%</td>
+                    <td>$500K-$750K</td>
+                    <td>$125-$140</td>
+                    <td><span class="roi-score">8.5/10</span></td>
+                </tr>
+                <tr onclick="toggleDetail('trademark')">
+                    <td class="rank rank-4">4️⃣</td>
+                    <td class="brand-name">Trademark Collection</td>
+                    <td>Wyndham</td>
+                    <td>Soft Brand</td>
+                    <td>$20K-$30K</td>
+                    <td>$5.0M-$7.4M</td>
+                    <td class="approval-high">95%</td>
+                    <td>$500K-$750K</td>
+                    <td>$100-$115</td>
+                    <td><span class="roi-score">8.2/10</span></td>
+                </tr>
+                <tr onclick="toggleDetail('wyndham')">
+                    <td class="rank rank-5">5️⃣</td>
+                    <td class="brand-name">Wyndham Hotels</td>
+                    <td>Wyndham</td>
+                    <td>Upscale Full</td>
+                    <td>$35K-$45K</td>
+                    <td>$8.7M-$11.2M</td>
+                    <td class="approval-high">90%</td>
+                    <td>$750K-$1.0M</td>
+                    <td>$115-$135</td>
+                    <td><span class="roi-score">7.8/10</span></td>
+                </tr>
+                <tr onclick="toggleDetail('vignette')">
+                    <td class="rank rank-6">6️⃣</td>
+                    <td class="brand-name">Vignette Collection</td>
+                    <td>IHG</td>
+                    <td>Luxury Soft</td>
+                    <td>$45K-$65K</td>
+                    <td>$11.2M-$16.1M</td>
+                    <td class="approval-medium">55%</td>
+                    <td>$750K-$1.2M</td>
+                    <td>$145-$165</td>
+                    <td><span class="roi-score">7.5/10</span></td>
+                </tr>
+                <tr onclick="toggleDetail('grand')">
+                    <td class="rank rank-7">7️⃣</td>
+                    <td class="brand-name">Wyndham Grand</td>
+                    <td>Wyndham</td>
+                    <td>Upper Upscale</td>
+                    <td>$45K-$60K</td>
+                    <td>$11.2M-$14.9M</td>
+                    <td class="approval-medium">75%</td>
+                    <td>$1.0M-$1.5M</td>
+                    <td>$140-$160</td>
+                    <td><span class="roi-score">7.2/10</span></td>
+                </tr>
+                <tr onclick="toggleDetail('autograph')">
+                    <td class="rank rank-8">8️⃣</td>
+                    <td class="brand-name">Autograph Collection</td>
+                    <td>Marriott</td>
+                    <td>Upper Upscale</td>
+                    <td>$35K-$50K</td>
+                    <td>$8.7M-$12.4M</td>
+                    <td class="approval-low">45%</td>
+                    <td>$300K-$500K</td>
+                    <td>$135-$155</td>
+                    <td><span class="roi-score">6.8/10</span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Detail Panels -->
+        <div id="tryp-detail" class="detail-panel">
+            <h2>TRYP by Wyndham - #1 Ranked Option</h2>
+            <p style="color: #81c784; margin-bottom: 15px;">Mediterranean lifestyle brand perfect for Baltimore's waterfront convention market</p>
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h3>Why It's #1</h3>
+                    <ul>
+                        <li>Seamless internal Wyndham transfer (95% approval)</li>
+                        <li>Mediterranean lifestyle perfect for waterfront</li>
+                        <li>Lowest investment with highest key money</li>
+                        <li>Convention millennial magnet</li>
+                        <li>Rooftop bar potential with harbor views</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Hypothetical Room Costs</h3>
+                    <ul>
+                        <li>TRYP signature bedding: ~$2,500/room</li>
+                        <li>Local art curation: ~$500/room</li>
+                        <li>Tech upgrade package: ~$3,000/room</li>
+                        <li>Mediterranean textiles: ~$2,000/room</li>
+                        <li>55" Samsung hospitality TVs included</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Public Space Requirements</h3>
+                    <ul>
+                        <li>Rooftop bar conversion: ~$1.2M additional</li>
+                        <li>Co-working zones: ~$500K</li>
+                        <li>Barista bar setup: ~$150K</li>
+                        <li>Fitness center refresh: ~$300K</li>
+                        <li>Mediterranean-inspired lobby: ~$400K</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="dolce-detail" class="detail-panel">
+            <h2>Dolce by Wyndham - #2 Convention Powerhouse</h2>
+            <p style="color: #81c784; margin-bottom: 15px;">Purpose-built for meetings with 0.1 mile Convention Center proximity</p>
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h3>Convention Synergy</h3>
+                    <ul>
+                        <li>Direct Convention Center adjacency</li>
+                        <li>Premium meeting rates offset investment</li>
+                        <li>Complete Meeting Package revenue</li>
+                        <li>55 annual conventions = guaranteed demand</li>
+                        <li>Corporate RFP magnet positioning</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Space Conversion Costs</h3>
+                    <ul>
+                        <li>Convert 50 rooms to meeting: ~$3M</li>
+                        <li>State-of-art AV systems: ~$1.5M</li>
+                        <li>24/7 F&B operations: ~$800K</li>
+                        <li>Conference concierge training: ~$200K</li>
+                        <li>Business center upgrade: ~$250K</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Revenue Multipliers</h3>
+                    <ul>
+                        <li>Meeting space: $225 vs $45 PSF</li>
+                        <li>CMP rates: $125-$175/day</li>
+                        <li>Group catering margins: 65-75%</li>
+                        <li>Convention ADR: $425+ capability</li>
+                        <li>Annual group revenue: $4M+ potential</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tapestry-detail" class="detail-panel">
+            <h2>Tapestry Collection - #3 Hilton Soft Brand</h2>
+            <p style="color: #81c784; margin-bottom: 15px;">Premium positioning with 173M+ Hilton Honors members</p>
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h3>Soft Brand Advantages</h3>
+                    <ul>
+                        <li>Design flexibility maintains character</li>
+                        <li>0.3-0.5 mile radius vs 1-3 for hard brands</li>
+                        <li>Create "The Hopkins Baltimore" identity</li>
+                        <li>Premium positioning potential</li>
+                        <li>Hilton distribution power</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Technology Requirements</h3>
+                    <ul>
+                        <li>OnQ PMS Integration: ~$150K</li>
+                        <li>Digital Key rollout: ~$75K</li>
+                        <li>Hilton Honors setup: ~$50K</li>
+                        <li>Wi-Fi 6E infrastructure: ~$175K</li>
+                        <li>Revenue management system: ~$100K</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Vendor Requirements</h3>
+                    <ul>
+                        <li>American Hotel Register (OS&E)</li>
+                        <li>Serta bedding program: ~$300K</li>
+                        <li>LG hospitality TVs: ~$200K</li>
+                        <li>Crabtree & Evelyn amenities</li>
+                        <li>Standard Textile linens</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="trademark-detail" class="detail-panel">
+            <h2>Trademark Collection - #4 Flexible Soft Brand</h2>
+            <p style="color: #81c784; margin-bottom: 15px;">Independent spirit with Wyndham backing and minimal requirements</p>
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h3>Brand Promise</h3>
+                    <ul>
+                        <li>90% design flexibility</li>
+                        <li>Maintain existing character</li>
+                        <li>Minimal PIP requirements</li>
+                        <li>Local partnerships encouraged</li>
+                        <li>Quick conversion timeline</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Light Requirements</h3>
+                    <ul>
+                        <li>Wyndham Rewards: ~$75K</li>
+                        <li>Basic tech upgrades: ~$150K</li>
+                        <li>Signage updates: ~$50K</li>
+                        <li>Quality standards audit: ~$25K</li>
+                        <li>Staff training program: ~$30K</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Market Positioning</h3>
+                    <ul>
+                        <li>Target ADR: $120-140</li>
+                        <li>Business/leisure mix: 60/40</li>
+                        <li>Convention capture potential</li>
+                        <li>Local corporate accounts</li>
+                        <li>Weekend leisure packages</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="wyndham-detail" class="detail-panel">
+            <h2>Wyndham Hotels - #5 Full Service Upgrade</h2>
+            <p style="color: #81c784; margin-bottom: 15px;">Traditional full-service positioning with strong corporate appeal</p>
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h3>Full Service Benefits</h3>
+                    <ul>
+                        <li>Established brand recognition</li>
+                        <li>Corporate travel programs</li>
+                        <li>Group sales infrastructure</li>
+                        <li>90% approval likelihood</li>
+                        <li>Proven operating model</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Upgrade Requirements</h3>
+                    <ul>
+                        <li>Full restaurant concept: ~$1.2M</li>
+                        <li>Meeting space enhancement: ~$800K</li>
+                        <li>Premium bedding program: ~$400K</li>
+                        <li>Lobby modernization: ~$600K</li>
+                        <li>Fitness center upgrade: ~$300K</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Revenue Drivers</h3>
+                    <ul>
+                        <li>Corporate negotiated rates</li>
+                        <li>Government per diem capture</li>
+                        <li>Weekend package potential</li>
+                        <li>F&B revenue streams</li>
+                        <li>Meeting/event income</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="vignette-detail" class="detail-panel">
+            <h2>Vignette Collection - #6 IHG Luxury Soft Brand</h2>
+            <p style="color: #81c784; margin-bottom: 15px;">New luxury collection seeking flagship properties in key markets</p>
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h3>Strategic Advantages</h3>
+                    <ul>
+                        <li>Brand new - seeking flagships</li>
+                        <li>Zero Baltimore presence</li>
+                        <li>Luxury soft brand flexibility</li>
+                        <li>High key money potential</li>
+                        <li>Premium ADR positioning</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Luxury Requirements</h3>
+                    <ul>
+                        <li>IHG Concerto PMS: ~$175K</li>
+                        <li>Luxury room product: ~$15-20K/room</li>
+                        <li>Signature F&B concept required</li>
+                        <li>Concierge service standards</li>
+                        <li>Premium spa/wellness amenities</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Investment Profile</h3>
+                    <ul>
+                        <li>Total conversion: $11-16M</li>
+                        <li>Key money: $750K-1.2M</li>
+                        <li>5-year ROI projection: 140%</li>
+                        <li>Target ADR: $195-225</li>
+                        <li>Premium market positioning</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="grand-detail" class="detail-panel">
+            <h2>Wyndham Grand - #7 Upper Upscale Positioning</h2>
+            <p style="color: #81c784; margin-bottom: 15px;">Premium full-service brand with resort-style amenities</p>
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h3>Premium Features</h3>
+                    <ul>
+                        <li>Upper upscale positioning</li>
+                        <li>Resort-style amenities expected</li>
+                        <li>Signature restaurant required</li>
+                        <li>Enhanced spa/wellness facilities</li>
+                        <li>Concierge level offerings</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Major Investments</h3>
+                    <ul>
+                        <li>Complete room renovation: ~$8M</li>
+                        <li>Signature restaurant: ~$1.5M</li>
+                        <li>Spa facility addition: ~$2M</li>
+                        <li>Rooftop amenity deck: ~$1.2M</li>
+                        <li>Technology upgrades: ~$800K</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Market Positioning</h3>
+                    <ul>
+                        <li>Target ADR: $175-200</li>
+                        <li>Luxury business travelers</li>
+                        <li>High-end group business</li>
+                        <li>Weekend getaway packages</li>
+                        <li>Premium event hosting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="autograph-detail" class="detail-panel">
+            <h2>Autograph Collection - #8 Marriott Soft Brand</h2>
+            <p style="color: #81c784; margin-bottom: 15px;">"Exactly Like Nothing Else" positioning with unique storytelling</p>
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h3>Brand Challenges</h3>
+                    <ul>
+                        <li>45% approval probability</li>
+                        <li>Marriott saturation nearby</li>
+                        <li>Need exceptional concept</li>
+                        <li>Higher investment threshold</li>
+                        <li>Complex approval process</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Requirements If Approved</h3>
+                    <ul>
+                        <li>MARSHA Integration: ~$200K</li>
+                        <li>Mobile Key/Check-in: ~$100K</li>
+                        <li>Design investment: ~$12-18K/room</li>
+                        <li>Unique F&B concept mandatory</li>
+                        <li>Local art program required</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <h3>Potential Benefits</h3>
+                    <ul>
+                        <li>Marriott Bonvoy access</li>
+                        <li>Premium brand recognition</li>
+                        <li>Design flexibility</li>
+                        <li>Higher ADR potential</li>
+                        <li>Lifestyle positioning</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Interactive ROI Calculator -->
+        <div class="calculator">
+            <h2>Hypothetical ROI Calculator</h2>
+            <p style="color: #90a4ae; margin-bottom: 20px;">*All calculations are estimates for illustrative purposes only</p>
+            
+            <div class="calculator-inputs">
+                <div class="input-group">
+                    <label>Select Brand</label>
+                    <select id="brandSelect" style="padding: 10px; border: 1px solid #3949ab; background: #2d3748; color: #e1e8ed; border-radius: 5px;">
+                        <option value="tryp">TRYP by Wyndham</option>
+                        <option value="dolce">Dolce by Wyndham</option>
+                        <option value="tapestry">Tapestry Collection</option>
+                        <option value="trademark">Trademark Collection</option>
+                        <option value="wyndham">Wyndham Hotels</option>
+                        <option value="vignette">Vignette Collection</option>
+                        <option value="grand">Wyndham Grand</option>
+                        <option value="autograph">Autograph Collection</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Investment Amount ($)</label>
+                    <input type="number" id="investment" value="8000000">
+                </div>
+                <div class="input-group">
+                    <label>Key Money ($)</label>
+                    <input type="number" id="keyMoney" value="1250000">
+                </div>
+                <div class="input-group">
+                    <label>Target Year 3 RevPAR ($)</label>
+                    <input type="number" id="revpar" value="118">
+                </div>
+            </div>
+            
+            <button class="calculate-btn" onclick="calculateROI()">Calculate Hypothetical Returns</button>
+            
+            <div class="results" id="results" style="display: none;">
+                <div class="result-item">
+                    <div class="result-value" id="netInvestment">$6.75M</div>
+                    <div class="result-label">Net Investment</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="annualRevenue">$10.7M</div>
+                    <div class="result-label">Est. Annual Revenue</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="payback">3.8 years</div>
+                    <div class="result-label">Payback Period</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="fiveYearNOI">$32.5M</div>
+                    <div class="result-label">5-Year NOI</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="irr">22.5%</div>
+                    <div class="result-label">Projected IRR*</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Created by OmniStay Savant | Hotel Intelligence Core</p>
+            <p>© 2025 - For Educational and Planning Purposes Only</p>
+            <p style="margin-top: 10px; font-size: 0.8em;">*All projections are hypothetical. Consult with brand representatives and industry professionals for actual data.</p>
+        </div>
+    </div>
+    
+    <script>
+        function toggleDetail(brand) {
+            // Hide all detail panels
+            const allPanels = document.querySelectorAll('.detail-panel');
+            allPanels.forEach(panel => {
+                if (panel.id !== brand + '-detail') {
+                    panel.style.display = 'none';
+                }
+            });
+            
+            // Toggle the selected panel
+            const panel = document.getElementById(brand + '-detail');
+            if (panel) {
+                panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+        
+        function calculateROI() {
+            const investment = parseFloat(document.getElementById('investment').value);
+            const keyMoney = parseFloat(document.getElementById('keyMoney').value);
+            const revpar = parseFloat(document.getElementById('revpar').value);
+            
+            // Hypothetical calculations
+            const netInvestment = investment - keyMoney;
+            const rooms = 248;
+            const occupancy = 0.72;
+            const annualRevenue = revpar * 365 * rooms * occupancy / 1000000;
+            const noi = annualRevenue * 0.35; // 35% NOI margin estimate
+            const payback = netInvestment / (noi * 1000000);
+            const fiveYearNOI = noi * 5;
+            const irr = ((Math.pow((investment + (noi * 5 * 1000000)) / investment, 1/5) - 1) * 100).toFixed(1);
+            
+            // Update results
+            document.getElementById('netInvestment').textContent = '$' + (netInvestment / 1000000).toFixed(2) + 'M';
+            document.getElementById('annualRevenue').textContent = '$' + annualRevenue.toFixed(1) + 'M';
+            document.getElementById('payback').textContent = payback.toFixed(1) + ' years';
+            document.getElementById('fiveYearNOI').textContent = '$' + fiveYearNOI.toFixed(1) + 'M';
+            document.getElementById('irr').textContent = irr + '%';
+            
+            // Show results
+            document.getElementById('results').style.display = 'grid';
+        }
+        
+        // Add hover effects to table rows
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.style.cursor = 'pointer';
+        });
+    </script>
+</body>
+</html>
